@@ -13,6 +13,7 @@ class Embedly extends React.Component {
       url: '',
       thumbnailUrl: 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs=',
       version: '',
+      html: '',
       provider_name: '',
       type: '',
       thumbnail_height: 1
@@ -22,7 +23,10 @@ class Embedly extends React.Component {
   componentWillMount() {
     let params = {
       url: this.props.url,
-      key: this.props.apiKey
+      key: this.props.apiKey,
+      maxheight: this.props.maxheight || 500,
+      maxwidth: this.props.maxwidth || 500,
+      scheme: this.props.scheme || 'https'
     };
 
     request.get(this.apiUrl)
@@ -76,6 +80,10 @@ class Embedly extends React.Component {
       margin: "5px 0 0",
       fontSize: "11px"
     };
+
+    if (this.state.type === 'rich') {
+      return <div dangerouslySetInnerHTML={this.state.html} />
+    }
 
     return(
       <a className="embedly" href={this.state.url} style={aStyle}>
